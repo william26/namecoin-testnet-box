@@ -7,7 +7,7 @@
 # https://github.com/freewil/bitcoin-testnet-box
 #
 
-FROM ubuntu:12.04
+FROM ubuntu:latest
 MAINTAINER Antoine Jackson <a.j.william26@gmail.com>
 
 # basic dependencies to build headless namecoind
@@ -20,6 +20,8 @@ RUN apt-get install --yes python-software-properties
 RUN add-apt-repository --yes ppa:bitcoin/bitcoin
 RUN apt-get update
 RUN apt-get install --yes db4.8
+RUN apt-get install --yes libglibmm-2.4-dev
+
 
 # install git to clone namecoin's source
 RUN apt-get install --yes git
@@ -31,24 +33,25 @@ RUN adduser --disabled-login --gecos "" tester
 WORKDIR /home/tester
 
 # clone namecoin easy-mining branch and build it without UPnP support
-RUN git clone https://github.com/freewil/bitcoin.git
-RUN cd bitcoin && git checkout easy-mining
-RUN cd bitcoin/src && make -f makefile.unix USE_UPNP=
+RUN git clone https://github.com/william26/namecoin.git
+RUN cd namecoin && git checkout easy-mining
+RUN pwd
+RUN cd namecoin/src; ls; make UPNP=1
 
 # install bitcoind
-RUN cp bitcoin/src/bitcoind /usr/local/bin/bitcoind
+RUN cp namecoin/src/namecoind /usr/local/bin/testcoind
 
 # copy the testnet-box files into the image
-ADD . /home/tester/bitcoin-testnet-box
+ADD . /home/tester/namecoin-testnet-box
 
 # make tester user own the bitcoin-testnet-box
-RUN chown -R tester:tester /home/tester/bitcoin-testnet-box
+RUN chown -R tester:tester /home/tester/namecoin-testnet-box
 
 # use the tester user when running the image
 USER tester
 
 # run commands from inside the testnet-box directory
-WORKDIR /home/tester/bitcoin-testnet-box
+WORKDIR /home/tester/namecoin-testnet-box
 
 # expose two rpc ports for the nodes to allow outside container access
 EXPOSE 19001 19011

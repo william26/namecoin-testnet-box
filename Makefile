@@ -5,8 +5,8 @@ B1=-datadir=1
 B2=-datadir=2
 
 start:
-	$(NAMECOIND) $(B1) $(FLAGS) > 1.log
-	$(NAMECOIND) $(B2) $(FLAGS) > 2.log
+	$(NAMECOIND) $(B1) $(FLAGS) > logs/1.log
+	$(NAMECOIND) $(B2) $(FLAGS) > logs/2.log
 
 start-gui:
 	$(BITCOINGUI) $(B1) &
