@@ -16,7 +16,7 @@ RUN apt-get update
 RUN apt-get install --yes build-essential libssl-dev libboost-all-dev
 
 # install db4.8 provided via the bitcoin PPA
-RUN apt-get install --yes python-software-properties
+RUN apt-get install --yes software-properties-common
 RUN add-apt-repository --yes ppa:bitcoin/bitcoin
 RUN apt-get update
 RUN apt-get install --yes db4.8
